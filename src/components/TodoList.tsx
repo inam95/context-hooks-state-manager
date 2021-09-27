@@ -1,27 +1,30 @@
-import * as React from "react";
-import { Button, Input, Flex, Checkbox, Heading } from "@chakra-ui/react";
+import * as React from 'react';
+import { Button, Input, Flex, Checkbox, Heading } from '@chakra-ui/react';
+import { useTodosContext } from '../store';
 
-function TodoListItems() {
+const TodoListItems: React.FC = () => {
+  const { todos, toggleTodo, updateTodo, deleteTodo } = useTodosContext();
+
   return (
     <>
-      {[].map((todo: { id: number; text: string }) => (
+      {todos.map((todo: { id: number; text: string }) => (
         <Flex pt={2} key={todo.id}>
-          <Checkbox />
-          <Input mx={2} value={todo.text} />
-          <Button>Delete</Button>
+          <Checkbox onClick={() => toggleTodo(todo.id)} />
+          <Input mx={2} value={todo.text} onChange={(e) => updateTodo(todo.id, e.target.value)} />
+          <Button onClick={() => deleteTodo(todo.id)}>Delete</Button>
         </Flex>
       ))}
     </>
   );
-}
+};
 
-function TodoList() {
+const TodoList: React.FC = () => {
   return (
     <>
       <Heading>Todo List</Heading>
       <TodoListItems />
     </>
   );
-}
+};
 
 export default TodoList;
